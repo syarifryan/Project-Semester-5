@@ -1,5 +1,6 @@
 # Project-Semester-5
-Alat Penghitung Benih Lele
+- Workshop Pengolahan Citra dan Vision (Alat Penghitung Benih Lele)
+- Workshop Sistem Tertanam (Deteksi Kualitas Air pada Wadah Lele dengan Metode Fuzzy)
 
 - Muhammad Syarif Januriansyah (E41192426)
 - Rajih Kharissuha (E41192241)
