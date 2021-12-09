@@ -85,7 +85,40 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+IAHI = imaqhwinfo;
+IA = (IAHI.InstalledAdaptors);
+D = menu ('Select Video Input Devices:', IA);
 
+if isempty(IA) || D ==0
+    msgbox(('You don''t have any Video Input Installed Adaptors!'...
+        'please try again select Adaptors properly.'))
+    return
+end
+
+IA = char(IA);
+IA = IA (D, :);
+IA = (IA=='')=[];
+x= imaqhwinfo(IA);
+
+try
+    DeviceID= menu ('Select Device ID', x.DeviceIDs);
+    F= x.Deviceinfo(DeviceID).SupportedFormats;
+    nF= menu ('Select Format', F;
+    format = F(nF);
+catch
+    warndlg({'Try Another Devices or ID';...
+        'you Don''t Have Installed This Device  (VideoInputDevices)'})
+    return  
+end
+
+VidObj=videoinput(IA,DeviceID,Format);
+handles.VidObj=VidObj;
+vidRes = get (handles.VidObj, 'VideoResolution');
+nBands = get (handles.VidObj, 'NumberofBands');
+axes(handle.axes1)
+hImage = image(zeros(vidRes (2), vidRes(1), nBands));
+priview(handles.VidObj,hImage)
+set(VidObj, 'r
 
 % --- Executes on button press in pushbutton2.
 function pushbutton2_Callback(hObject, eventdata, handles)
@@ -191,7 +224,7 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 image1 = handles.data1;
 gray = rgb2gray(image1);
 sobel = edge(gray, 'sobel');
-axes(handles.axes5);
+axes(handles.axes6);
 handles.data3 = sobel;
 imshow(sobel);
 guidata(hObject,handles);
@@ -201,5 +234,10 @@ function pushbutton10_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-imgIBW = im2bw
+image1 = handles.data1;
+imgIBW = im2bw(rgb2gray(Img1));
+bboxes = regionprops(ImgIBW);
+axes(handles.axes6);
+handles.data3 = imgIBW;
+imshow(imgIBW);
+guidata(hObject,handles);
