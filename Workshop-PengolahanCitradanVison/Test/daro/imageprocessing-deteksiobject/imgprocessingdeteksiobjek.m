@@ -86,6 +86,11 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+Video = handles.Video;
+axes(handles.axes1);
+Gambar1 = getsnapshot(Video);
+Gambar = yeber2rgb(Gambar1);
+imshow(gambar);
 
 % --- Executes on button press in pushbutton2.
 function pushbutton2_Callback(hObject, eventdata, handles)

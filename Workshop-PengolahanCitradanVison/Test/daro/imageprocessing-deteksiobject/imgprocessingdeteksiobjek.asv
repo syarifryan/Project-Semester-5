@@ -86,6 +86,9 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+Video = handles.Video;
+axes(handles.axes1);
+Gambar1 = gets
 
 % --- Executes on button press in pushbutton2.
 function pushbutton2_Callback(hObject, eventdata, handles)
@@ -191,7 +194,7 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 image1 = handles.data1;
 gray = rgb2gray(image1);
 sobel = edge(gray, 'sobel');
-axes(handles.axes5);
+axes(handles.axes6);
 handles.data3 = sobel;
 imshow(sobel);
 guidata(hObject,handles);
@@ -201,5 +204,10 @@ function pushbutton10_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
-imgIBW = im2bw
+image1 = handles.data1;
+imgIBW = im2bw(rgb2gray(Img1));
+bboxes = regionprops(ImgIBW);
+axes(handles.axes6);
+handles.data3 = imgIBW;
+imshow(imgIBW);
+guidata(hObject,handles);
