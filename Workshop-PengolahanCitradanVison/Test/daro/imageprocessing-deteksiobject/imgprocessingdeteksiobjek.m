@@ -179,9 +179,8 @@ image1 = handles.data1;
 bw = imcomplement(image1);
 axes(handles.axes4);
 imshow(bw);
-handles.data3 = bw;
+handles.data2 = bw;
 guidata(hObject,handles);
-
 
 % --- Executes on button press in pushbutton9.
 function pushbutton9_Callback(hObject, eventdata, handles)
@@ -190,16 +189,22 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 %cKonvolusi dengan operator Sobel
 image1 = handles.data1;
-sobelhor = [-1 0 1; -2 0 2; -1 0 1];
-sobelver = [-1 -2 -1; 0 0 0; 1 2 1];
-I1 = conv2(I,sobelhor,'same');
-I2 = conv2(I,sobelver,'same');
-J = sqrt((I1.^2)+(I2.^2));
-axes(handles.axes5);
-handles.data3 = J;
+gray = rgb2gray(image1);
+sobel = edge(gray, 'sobel');
+axes(handles.axes6);
+handles.data3 = sobel;
+imshow(sobel);
+guidata(hObject,handles);
 
 % --- Executes on button press in pushbutton10.
 function pushbutton10_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+image1 = handles.data1;
+imgIBW = im2bw(rgb2gray(Img1));
+bboxes = regionprops(ImgIBW);
+axes(handles.axes6);
+handles.data3 = imgIBW;
+imshow(imgIBW);
+guidata(hObject,handles);
