@@ -22,7 +22,7 @@ function varargout = imgprocessingdeteksiobjek(varargin)
 
 % Edit the above text to modify the response to help imgprocessingdeteksiobjek
 
-% Last Modified by GUIDE v2.5 08-Dec-2021 12:59:05
+% Last Modified by GUIDE v2.5 08-Dec-2021 17:58:40
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -55,13 +55,25 @@ function imgprocessingdeteksiobjek_OpeningFcn(hObject, eventdata, handles, varar
 % Choose default command line output for imgprocessingdeteksiobjek
 handles.output = hObject;
 
+clc
+
+axes(handles.axes1);
+axis off
+im=imread('z.jpg');
+imshow(im);
+
+axes(handles.axes2);
+axis off
+
+
 % Update handles structure
 guidata(hObject, handles);
+movegui(hObject,'center');
 
 % UIWAIT makes imgprocessingdeteksiobjek wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
-
+ 
 % --- Outputs from this function are returned to the command line.
 function varargout = imgprocessingdeteksiobjek_OutputFcn(hObject, eventdata, handles) 
 % varargout  cell array for returning output args (see VARARGOUT);
@@ -85,6 +97,19 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+axes(handles.axes1);
+
+handles.vid=videoinput('winvideo',1);
+
+vidRes = get(handles.vid,'VideoResolution');
+nBands = get(handles.vid, 'NumberOfBands');
+
+hImage = image(zeros(vidRes(2),vidRes(1), nBands), 'Parent',...
+handles.axes1);
+
+preview(handles.vid,hImage);
+
+guidata(hObject, handles);
 
 Video = handles.Video;
 axes(handles.axes1);
@@ -95,7 +120,12 @@ function pushbutton2_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton2 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+mi_imagen=getsnapshot(handles.vid);
 
+axes(handles.axes2);
+imshow(mi_imagen);
+
+imwrite(mi_imagen,'image\mifoto.jpg');
 
 % --- Executes on button press in pushbutton3.
 function pushbutton3_Callback(hObject, eventdata, handles)
@@ -125,10 +155,22 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-axes(handles.axes2);
-hold off;
-cla reset;
+try
+    delete(handles.VidObj)
+catch
+end
 
+axes(handles.axes1)
+cla reset
+set(gca,'XTick',[])
+set(gca,'YTick',[])
+
+axes(handles.axes2)
+cla reset
+set(gca,'XTick',[])
+set(gca,'YTick',[])
+
+set(handles.edit1,'String',1)
 
 % --- Executes on button press in pushbutton5.
 function pushbutton5_Callback(hObject, eventdata, handles)
@@ -168,9 +210,9 @@ function pushbutton7_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 image1 = handles.data1;
 gray = rgb2gray(image1);
-axes(handles.axes3);
+axes(handles.axes2);
 imshow(gray);
-handles.data1 = gray;
+handles.data2 = gray;
 guidata(hObject,handles);
 
 % --- Executes on button press in pushbutton8.
@@ -178,18 +220,14 @@ function pushbutton8_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton8 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-image1 = handles.data1;
-bw = imcomplement(image1);
-axes(handles.axes4);
-imshow(bw);
-handles.data2 = bw;
-guidata(hObject,handles);
+
 
 % --- Executes on button press in pushbutton9.
 function pushbutton9_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+<<<<<<< HEAD:Workshop-PengolahanCitradanVison/Test/daro/imageprocessing-deteksiobject/imgprocessingdeteksiobjek.asv
 %cKonvolusi dengan operator Sobel
 image1 = handles.data1;
 gray = rgb2gray(image1);
@@ -198,12 +236,16 @@ axes(handles.axes6);
 handles.data3 = sobel;
 imshow(sobel);
 guidata(hObject,handles);
+=======
+
+>>>>>>> 5b7e274c56cdd9fa3e5699041aecf2a32f0f42db:Workshop-PengolahanCitradanVison/Test/rajih/imageprocessing-deteksiobject/imgprocessingdeteksiobjek.m
 
 % --- Executes on button press in pushbutton10.
 function pushbutton10_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton10 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+<<<<<<< HEAD:Workshop-PengolahanCitradanVison/Test/daro/imageprocessing-deteksiobject/imgprocessingdeteksiobjek.asv
 image1 = handles.data1;
 imgIBW = im2bw(rgb2gray(Img1));
 bboxes = regionprops(ImgIBW);
@@ -211,3 +253,28 @@ axes(handles.axes6);
 handles.data3 = imgIBW;
 imshow(imgIBW);
 guidata(hObject,handles);
+=======
+
+
+
+function edit3_Callback(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit3 as text
+%        str2double(get(hObject,'String')) returns contents of edit3 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function edit3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+>>>>>>> 5b7e274c56cdd9fa3e5699041aecf2a32f0f42db:Workshop-PengolahanCitradanVison/Test/rajih/imageprocessing-deteksiobject/imgprocessingdeteksiobjek.m
