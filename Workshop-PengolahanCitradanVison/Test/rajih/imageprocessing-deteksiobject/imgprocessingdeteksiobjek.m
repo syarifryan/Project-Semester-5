@@ -227,7 +227,7 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton9 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-<<<<<<< HEAD:Workshop-PengolahanCitradanVison/Test/daro/imageprocessing-deteksiobject/imgprocessingdeteksiobjek.asv
+%<<<<<< HEAD:Workshop-PengolahanCitradanVison/Test/daro/imageprocessing-deteksiobject/imgprocessingdeteksiobjek.asv
 %cKonvolusi dengan operator Sobel
 image1 = handles.data1;
 gray = rgb2gray(image1);

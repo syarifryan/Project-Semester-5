@@ -55,8 +55,21 @@ function imgprocessingdeteksiobjek_OpeningFcn(hObject, eventdata, handles, varar
 % Choose default command line output for imgprocessingdeteksiobjek
 handles.output = hObject;
 
+clc
+
+axes(handles.axes1);
+axis off
+im=imread('z.jpg');
+imshow(im);
+
+axes(handles.axes2);
+axis off
+
+
 % Update handles structure
 guidata(hObject, handles);
+guidata(hObject, handles);
+movegui(hObject,'center');
 
 % UIWAIT makes imgprocessingdeteksiobjek wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -85,6 +98,22 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+axes(handles.axes1);
+handles.vid=videoinput('winvideo',1);
+vidRes = get(handles.vid,'VideoResolution');
+nBands = get(handles.vid, 'NumberOfBands');
+imWidth = vidRes(1);
+imHeight = vidRes(2);
+nBands = get(vid, 'Number of Bands');
+hImage = image(zeros(vidRes(2),vidRes(1), nBands), 'Parent',...
+handles.axes1);
+preview(handles.vid,hImage);
+
+guidata(hObject, handles);
+
+Video = handles.Video;
+axes(handles.axes1);
+Gambar1 = gets
 
 
 % --- Executes on button press in pushbutton2.
