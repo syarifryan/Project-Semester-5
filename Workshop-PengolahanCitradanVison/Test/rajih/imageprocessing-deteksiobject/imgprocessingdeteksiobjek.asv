@@ -115,11 +115,11 @@ N = bwareaopen(M,1000);
 %mengambil bounding box
 [labeled, numObject] = bwlabel(N,8);
 
-stats = regionprops(labeled,'BoundingBox');
+stats = regionprops(labeled,'BoundinBox');
 bbox = cat(1,stats.BoundingBox);
 
 %menampilkan bounnding box
-axes(handles.axes6), imshow(img);
+figure, imshow(img);
 hold on
 for idx = 1:numObject
     h = rectangle('Position',bbox(idx,:),'LineWidth',2);
@@ -128,8 +128,7 @@ for idx = 1:numObject
 end
 
 %menampilkan jumlah object
-title(['Jumlah Object',num2str(numObjects)])
-hold off;
+tile(['Jumlah Object',num2str(numObjects)])
     
 
 
