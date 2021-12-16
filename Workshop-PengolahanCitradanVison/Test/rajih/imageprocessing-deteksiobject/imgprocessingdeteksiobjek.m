@@ -106,29 +106,29 @@ J = sqrt((Ix.^2)+(Iy.^2));
 
 %threshold
 K = uint8(J);
-L = imbinarize(K,0.08);
+L = imbinarize(K,0.100);
 
 %Morfologi
 M = imfill(L,'holes');
-N = bwareaopen(M,1000);
+N = bwareaopen(M,100);
 
 %mengambil bounding box
-[labeled, numObject] = bwlabel(N,8);
+[labeled, numObjects] = bwlabel(N,8);
 
 stats = regionprops(labeled,'BoundingBox');
 bbox = cat(1,stats.BoundingBox);
 
 %menampilkan bounnding box
-axes(handles.axes6), imshow(img);
+axes(handles.axes6), imshow(N);
 hold on
-for idx = 1:numObject
+for idx = 1:numObjects
     h = rectangle('Position',bbox(idx,:),'LineWidth',2);
     set(h,'EdgeColor',[1 0 0]);
     hold on
 end
 
 %menampilkan jumlah object
-title(['Jumlah Object',num2str(numObjects)])
+title(['Jumlah Object ',num2str(numObjects - 1)])
 hold off;
     
 
@@ -259,9 +259,23 @@ function pushbutton8_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 % konvolusi dengan operator Roberts
-image1 = handles.data1;
-bw = imcomplement(image1);
-axes(handles.axes4), imshow(bw)
+
+img = handles.data1;
+
+%to gryscale
+I = double(rgb2gray(img));
+
+% Konvolusi
+robertshor = [0 1; -1 0];
+robertsver = [1 0; 0 -1];
+Ix = conv2(I,robertshor, 'same');
+Iy = conv2(I,robertsver, 'same');
+J = sqrt((Ix.^2)+(Iy.^2));
+
+%threshold
+K = uint8(J);
+L = imbinarize(K,0.08);
+axes(handles.axes4), imshow(L)
 
 
 % --- Executes on button press in pushbutton9.
@@ -271,10 +285,28 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 %<<<<<< HEAD:Workshop-PengolahanCitradanVison/Test/daro/imageprocessing-deteksiobject/imgprocessingdeteksiobjek.asv
 %cKonvolusi dengan operator Sobel
-image1 = handles.data1;
-M = imfill(image1, 'holes');
-N = bwareaopen(M,1000);
+
+img = handles.data1;
+
+%to gryscale
+I = double(rgb2gray(img));
+
+% Konvolusi
+robertshor = [0 1; -1 0];
+robertsver = [1 0; 0 -1];
+Ix = conv2(I,robertshor, 'same');
+Iy = conv2(I,robertsver, 'same');
+J = sqrt((Ix.^2)+(Iy.^2));
+
+%threshold
+K = uint8(J);
+L = imbinarize(K,0.08);
+
+%Morfologi
+M = imfill(L,'holes');
+N = bwareaopen(M,10000);
 axes(handles.axes5), imshow(N)
+
 
 % --- Executes on button press in pushbutton10.
 function pushbutton10_Callback(hObject, eventdata, handles)
