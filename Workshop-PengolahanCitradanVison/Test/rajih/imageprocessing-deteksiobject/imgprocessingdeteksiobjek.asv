@@ -67,18 +67,6 @@ axis off
 
 axes(handles.axes7);
 axis off
-
-axes(handles.axes3);
-axis off
-
-axes(handles.axes4);
-axis off
-
-axes(handles.axes5);
-axis off
-
-axes(handles.axes6);
-axis off
 % Update handles structure
 guidata(hObject, handles);
 movegui(hObject,'center');
@@ -144,7 +132,7 @@ for idx = 1:numObjects
 end
 
 %menampilkan jumlah object
-title(['Jumlah Object ',num2str(numObjects - 1)])
+set(handles.edit1,'string'num2str(numObjects - 1))
 hold off;
     
 
@@ -339,26 +327,22 @@ function pushbutton9_Callback(hObject, eventdata, handles)
 img = handles.data1;
 
 %to gryscale
-red = img(:,:,1);
-green = img(:,:,2);
-blue = img(:,:,3);
-img_gray =(0.3*red)+(0.5*green)+(0.2*blue);
-imgg = img_gray;
+I = double(rgb2gray(img));
 
-% Konvolusi operator roberts
+% Konvolusi
 robertshor = [0 1; -1 0];
 robertsver = [1 0; 0 -1];
-Ix = conv2(imgg,robertshor, 'same');
-Iy = conv2(imgg,robertsver, 'same');
+Ix = conv2(I,robertshor, 'same');
+Iy = conv2(I,robertsver, 'same');
 J = sqrt((Ix.^2)+(Iy.^2));
 
 %threshold
 K = uint8(J);
-L = imbinarize(K,0.027);
+L = imbinarize(K,0.08);
 
 %Morfologi
 M = imfill(L,'holes');
-N = bwareaopen(M,400);
+N = bwareaopen(M,10000);
 axes(handles.axes5), imshow(N)
 
 
