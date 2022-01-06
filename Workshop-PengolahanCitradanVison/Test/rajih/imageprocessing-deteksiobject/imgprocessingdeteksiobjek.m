@@ -22,7 +22,7 @@ function varargout = imgprocessingdeteksiobjek(varargin)
 
 % Edit the above text to modify the response to help imgprocessingdeteksiobjek
 
-% Last Modified by GUIDE v2.5 08-Dec-2021 17:58:40
+% Last Modified by GUIDE v2.5 06-Jan-2022 10:50:56
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -79,6 +79,10 @@ axis off
 
 axes(handles.axes6);
 axis off
+
+axes(handles.axes8);
+axis off
+
 % Update handles structure
 guidata(hObject, handles);
 movegui(hObject,'center');
@@ -112,39 +116,53 @@ green = img(:,:,2);
 blue = img(:,:,3);
 img_gray =(0.3*red)+(0.5*green)+(0.2*blue);
 imgg = img_gray;
+[M,N]=size(imgg);
+B_seg = zeros(M,N);
+for k = 1 : M
+   for l = 1 : N
+     if imgg(k,l)<105 
+         B_seg(k,l)=1;
+      else
+         B_seg(k,l)=0;
+      end
+   end
+end
 
 % Konvolusi operator roberts
-robertshor = [0 1; -1 0];
-robertsver = [1 0; 0 -1];
-Ix = conv2(imgg,robertshor, 'same');
-Iy = conv2(imgg,robertsver, 'same');
-J = sqrt((Ix.^2)+(Iy.^2));
+%robertshor = [0 1; -1 0];
+%robertsver = [1 0; 0 -1];
+%Ix = conv2(imgg,robertshor, 'same');
+%Iy = conv2(imgg,robertsver, 'same');
+% J = sqrt((Ix.^2)+(Iy.^2));
+% 
+% 
+% %threshold
+% K = uint8(J);
+% L = imbinarize(K,0.027);
+% 
+% 
+% 
+% %Morfologi
+% M = imfill(L,'holes');
+N = bwareaopen(B_seg,1000);
 
-%threshold
-K = uint8(J);
-L = imbinarize(K,0.027);
 
-%Morfologi
-M = imfill(L,'holes');
-N = bwareaopen(M,400);
 
 %mengambil bounding box
 [labeled, numObjects] = bwlabel(N,8);
-
 stats = regionprops(labeled,'BoundingBox');
 bbox = cat(1,stats.BoundingBox);
 
 %menampilkan bounnding box
 axes(handles.axes6), imshow(N);
-hold on
+
 for idx = 1:numObjects
     h = rectangle('Position',bbox(idx,:),'LineWidth',2);
     set(h,'EdgeColor',[1 0 0]);
-    hold on
 end
 
 %menampilkan jumlah object
-title(['Jumlah Object ',num2str(numObjects - 1)])
+title(['Jumlah Object ',num2str(numObjects)])
 hold off;
     
 
@@ -155,7 +173,6 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-axes(handles.axes1);
 
 handles.vid=videoinput('winvideo',1);
 
@@ -178,6 +195,7 @@ try
 mi_imagen=getsnapshot(handles.vid);
 
 n= str2double(get(handles.edit3,'string'))+1;
+set(handles.edit3,'string',num2str(n));
 
 
 axes(handles.axes2)
@@ -219,11 +237,6 @@ try
     delete(handles.VidObj)
 catch
 end
-
-axes(handles.axes1)
-cla reset
-set(gca,'XTick',[])
-set(gca,'YTick',[])
 
 axes(handles.axes2)
 cla reset
@@ -396,3 +409,13 @@ function edit3_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes on button press in pushbutton12.
+function pushbutton12_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton12 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+image1 = handles.data1;
+grayscale = rgb2gray(image1);
+axes(handles.axes8), imhist(grayscale);
