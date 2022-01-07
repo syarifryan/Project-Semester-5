@@ -1,0 +1,43 @@
+1. memanggil citra pada citra yang telah di pilih pada browsimage 
+
+#convert to gryscale
+
+red = img(:,:,1);
+green = img(:,:,2);
+blue = img(:,:,3);
+img_gray =(0.3*red)+(0.5*green)+(0.2*blue);
+
+2. Ditentukan nilai warna RGB 123 di lanjutkan dengan rumus
+
+# Konvolusi Operator roberts
+
+robertshor = [0 1; -1 0];/ nilai horizontal
+robertsver = [1 0; 0 -1];/ nilai vertikal
+Ix = conv2(imgg,robertshor, 'same'); / di lakukan convolusi pada kernel horizontal dengan menggunakan fungsi convolusi 2(2 dimensi)
+Iy = conv2(imgg,robertsver, 'same');/ di lakukan convolusi pada kernel vertikal dengan menggunakan fungsi convolusi 2(2 dimensi)
+J = sqrt((Ix.^2)+(Iy.^2)); / mengambil maknetudenya dengan menggunakan sqrt(akar kuadrat)
+
+# menjadikan treshoold
+
+K = uint8(J); / menggunakan perintah uint8 agar dapat di convert menjadi citra treshoold
+L = imbinarize(K,0.027); / menggunakan perintah imbinarize dengan nilai 0.027 untuk di lakukan trshoold imbinarize(I, T) 
+berfungsi untuk merubah image ke citra biner berdasarkan ambang batas (threshold) intensitas gambar. 
+
+# morfologi
+
+M = imfill(L,'holes'); untuk menutupi lubang pada area object
+N = bwareaopen(M,400); untuk menghapus noice di luar object yang luasnya di bawah 400
+
+#memberikan bounding box
+
+[labeled, numObjects] = bwlabel(N,8); menggunakan perintah bwlabel untuk memberikan label pada citra black and white dengan 8 arah mata angin
+stats = regionprops(labeled,'BoundingBox'); untuk diberikan box atau kotak pada label di setiap object
+bbox = cat(1,stats.BoundingBox); memanggil box untuk di tampilkan
+
+# menampilkan box
+axes(handles.axes6), imshow(N); / menampilkan gambar hasil morfologi 
+
+for idx = 1:numObjects diberikan index 1 sampai numberobject sesuai banyaknya object yang terlabeli
+    h = rectangle('Position',bbox(idx,:),'LineWidth',2); di tampilkan bounding box dengan perintah rectangle dengan memanggil bbox dengan jumlah index dan linewidth atau ketebalan  garis box 2 
+    set(h,'EdgeColor',[1 0 0]); di berikan warna merah pada garis box
+end
